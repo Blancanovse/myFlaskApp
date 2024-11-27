@@ -8,9 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
 import subprocess
 
-# os.chdir(os.path.dirname(__file__))
-
-path_base = "/home/dsonlineli/Taller_Despliegue/"
+os.chdir(os.path.dirname(__file__))
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -25,7 +23,7 @@ def hello():
 @app.route('/api/v1/predict', methods=['GET'])
 def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
 
-    model = pickle.load(open(path_base + 'ad_model.pkl','rb'))
+    model = pickle.load(open('ad_model.pkl','rb'))
     tv = request.args.get('tv', None)
     radio = request.args.get('radio', None)
     newspaper = request.args.get('newspaper', None)
@@ -43,8 +41,8 @@ def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
 @app.route('/api/v1/retrain', methods=['GET'])
 # Enruta la funcion al endpoint /api/v1/retrain
 def retrain(): # Rutarlo al endpoint '/api/v1/retrain/', metodo GET
-    if os.path.exists(path_base + "data/Advertising_new.csv"):
-        data = pd.read_csv(path_base + 'data/Advertising_new.csv')
+    if os.path.exists( "data/Advertising_new.csv"):
+        data = pd.read_csv('data/Advertising_new.csv')
 
         X_train, X_test, y_train, y_test = train_test_split(data.drop(columns=['sales']),
                                                         data['sales'],
